@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>csu-help</artifactId>
+        <groupId>csu.coderwu</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>csu-help-wx-mini</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>csu.coderwu</groupId>
+            <artifactId>csu-help-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>csu.coderwu</groupId>
+            <artifactId>csu-help-db</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

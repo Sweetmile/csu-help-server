@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/csuhelp?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&verifyServerCertificate=false&useSSL=false
+      username: root
+      password: password
+      driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 25
+      max-active: 50
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 10
+      validation-query: SELECT 1 FROM DUAL
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      filters: stat,wall,log4j
+
+logging:
+  level:
+    root: error
+    org.springframeword: error
+    org.mybatis: error
+    csu.coderwu.csuhelp.db: debug
+    csu.coderwu.csuhelp: debug
