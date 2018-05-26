@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "csu.coderwu.csuhelp",
         "csu.coderwu.csuhelp.core",
         "csu.coderwu.csuhelp.db",
+        "csu.coderwu.csuhelp.cache",
         "csu.coderwu.csuhelp.wx.mini"
 
 })

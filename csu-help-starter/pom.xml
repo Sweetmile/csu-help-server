@@ -28,6 +28,10 @@
         </dependency>
         <dependency>
             <groupId>csu.coderwu</groupId>
+            <artifactId>csu-help-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>csu.coderwu</groupId>
             <artifactId>csu-help-wx-mini</artifactId>
         </dependency>
     </dependencies>

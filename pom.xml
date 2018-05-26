@@ -31,6 +31,7 @@
         <module>csu-help-db</module>
         <module>csu-help-starter</module>
         <module>csu-help-wx-mini</module>
+        <module>csu-help-cache</module>
     </modules>
 
     <dependencyManagement>
@@ -47,9 +48,15 @@
             </dependency>
             <dependency>
                 <groupId>csu.coderwu</groupId>
+                <artifactId>csu-help-cache</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>csu.coderwu</groupId>
                 <artifactId>csu-help-wx-mini</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
 
             <!-- Spring Boot Mybatis 依赖 -->
             <dependency>

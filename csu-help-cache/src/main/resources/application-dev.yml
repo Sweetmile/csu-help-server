@@ -1,0 +1,15 @@
+spring:
+  redis:
+    database: 1
+    host: localhost
+    port: 6379
+    password:
+
+
+logging:
+  level:
+    root: error
+    org.springframeword: error
+    org.mybatis: error
+    csu.coderwu.csuhelp.cache: debug
+    csu.coderwu.csuhelp: error
