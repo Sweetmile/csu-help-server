@@ -23,22 +23,26 @@ public class RedisTokenManager implements TokenManager {
     private RedisTemplate<String, String> redisTemplate;
 
     @Override
-    public TokenModel generateToken(String id) {
-        TokenModel tokenModel = new TokenModel();        tokenModel.setId(id);
-        tokenModel.setToken(redisTemplate.boundValueOps(id).get());
-        LocalDateTime updateTime = LocalDateTime.now();
-        LocalDateTime expiresTime = updateTime.plusHours(Token.TOKEN_EXPIRES_HOUR);
-        return createToken(id);
+    public TokenModel generateToken(TokenModel tokenModel) {
+        String token;
+        if (tokenModel != null && (token = tokenModel.getToken()) != null && !token.isEmpty()) {
+            deleteToken(tokenModel);
+            return createToken(redisTemplate.boundValueOps(token).get());
+        }
+        return null;
     }
 
     @Override
     public TokenModel createToken(String id) {
+        if (id == null || id.isEmpty()) {
+            return null;
+        }
         String token = UUID.randomUUID().toString().replace("-", "");
         LocalDateTime updateTime = LocalDateTime.now();
         LocalDateTime expiresTime = updateTime.plusHours(Token.TOKEN_EXPIRES_HOUR);
         TokenModel tokenModel = new TokenModel().setId(id)
                 .setToken(token).setUpdateTime(updateTime).setExpireTime(expiresTime);
-        redisTemplate.boundValueOps(id).set(token, Token.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
+        redisTemplate.boundValueOps(token).set(id, Token.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
         return tokenModel;
     }
 
@@ -47,12 +51,22 @@ public class RedisTokenManager implements TokenManager {
         if (model == null) {
             return false;
         }
-        String token = redisTemplate.boundValueOps(model.getId()).get();
-        return token.equals(model.getToken());
+        String id = redisTemplate.boundValueOps(model.getToken()).get();
+        return model.getId() != null && id.equals(model.getId());
     }
 
     @Override
-    public void deleteToken(String id) {
-        redisTemplate.delete(id);
+    public void deleteToken(TokenModel tokenModel) {
+        if (tokenModel != null) {
+            redisTemplate.delete(tokenModel.getToken());
+        }
+    }
+
+    @Override
+    public String getId(TokenModel tokenModel) {
+        if (tokenModel != null) {
+            return redisTemplate.boundValueOps(tokenModel.getToken()).get();
+        }
+        return null;
     }
 }

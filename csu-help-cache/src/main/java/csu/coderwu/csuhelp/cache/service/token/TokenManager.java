@@ -11,10 +11,10 @@ public interface TokenManager {
 
     /**
      * 更新token
-     * @param id 标识用户的id
+     * @param tokenModel TokenModel 现有token
      * @return TokenModel
      */
-    TokenModel generateToken(String id);
+    TokenModel generateToken(TokenModel tokenModel);
 
     /**
      * 创建token
@@ -32,7 +32,14 @@ public interface TokenManager {
 
     /**
      * 删除token
-     * @param id 标识用户的id
+     * @param tokenModel 标识用户的id
      */
-    void deleteToken (String id);
+    void deleteToken (TokenModel tokenModel);
+
+    /**
+     * 根据token获取id
+     * @param tokenModel TokenModel
+     * @return String id
+     */
+    String getId(TokenModel tokenModel);
 }
