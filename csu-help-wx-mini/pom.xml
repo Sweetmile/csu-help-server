@@ -28,7 +28,14 @@
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-miniapp</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>csu.coderwu</groupId>
+            <artifactId>csu-java-es</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>csu.coderwu</groupId>
+            <artifactId>csu-java-cet</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

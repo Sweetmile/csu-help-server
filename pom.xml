@@ -24,6 +24,7 @@
         <weixin.tools.version>3.0.0</weixin.tools.version>
         <mysql.connector.version>5.1.46</mysql.connector.version>
         <druid.version>1.1.9</druid.version>
+        <csu.java.tools.version>1.0.0</csu.java.tools.version>
     </properties>
 
     <modules>
@@ -84,6 +85,17 @@
                 <version>${weixin.tools.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>csu.coderwu</groupId>
+                <artifactId>csu-java-es</artifactId>
+                <version>${csu.java.tools.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>csu.coderwu</groupId>
+                <artifactId>csu-java-cet</artifactId>
+                <version>${csu.java.tools.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
