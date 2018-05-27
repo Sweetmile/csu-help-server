@@ -4,7 +4,6 @@ import csu.coderwu.csuhelp.cache.bean.TokenModel;
 import csu.coderwu.csuhelp.cache.service.token.impl.RedisTokenManager;
 import csu.coderwu.csuhelp.wx.mini.annotation.LoginId;
 import csu.coderwu.csuhelp.wx.mini.config.Global;
-import csu.coderwu.csuhelp.wx.mini.service.UserTokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
