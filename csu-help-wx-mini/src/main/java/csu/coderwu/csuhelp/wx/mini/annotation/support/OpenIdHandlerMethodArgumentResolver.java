@@ -34,7 +34,6 @@ public class OpenIdHandlerMethodArgumentResolver implements HandlerMethodArgumen
     @Override
     public String resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
         String token = nativeWebRequest.getHeader(Global.TOKEN_KEY);
-        System.out.println(token);
         if (token.isEmpty()) {
             return null;
         }

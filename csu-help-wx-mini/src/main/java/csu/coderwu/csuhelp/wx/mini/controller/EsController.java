@@ -6,8 +6,11 @@ import csu.coderwu.csuhelp.db.entity.Student;
 import csu.coderwu.csuhelp.db.service.StudentService;
 import csu.coderwu.csuhelp.wx.mini.annotation.OpenId;
 import csu.coderwu.tool.es.api.EsService;
+import csu.coderwu.tool.es.exception.EsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * @author : coderWu
@@ -23,27 +26,44 @@ public class EsController {
     StudentService studentService;
 
     @PostMapping("/bind")
-    public Response bind(@OpenId String openid,
-                         @RequestParam(value = "xh", required = false) String xh,
-                         @RequestParam(value = "pwd", required = false) String pwd) {
+    public Response bind(@OpenId String openid,@RequestBody Map<String, Object> params) {
+        String xh = (String) params.get("xh");
+        String pwd = (String) params.get("pwd");
         if (openid == null) {
             return ResponseUtil.unlogin();
         }
         if (xh == null || pwd == null || xh.isEmpty() || pwd.isEmpty()) {
             return ResponseUtil.badArgument();
         }
-        if (!esService.accessible()) {
-            return ResponseUtil.fail("教务系统暂时不可用");
-        }
-        if (esService.loginCheck(xh, pwd)) {
-            return ResponseUtil.fail("学号密码不匹配");
-        } else {
+        try {
+            esService.accessible();
+            esService.loginCheck(xh, pwd);
             Student student = new Student();
             student.setEsPwd(pwd);
             student.setOpenId(openid);
             student.setSchoolNum(xh);
+            student.setName(esService.getStudentInfo(xh, pwd).getName());
             studentService.addStudent(student);
             return ResponseUtil.success("绑定成功");
+        } catch (EsException e) {
+            return ResponseUtil.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/info")
+    public Response getSchedule(@OpenId String openid) {
+        if (openid == null) {
+            return ResponseUtil.unlogin();
+        }
+        Student student = studentService.getStudent(openid);
+        try {
+            esService.loginCheck(student.getSchoolNum(), student.getEsPwd());
+            if (student != null) {
+                student.setEsPwd(null);
+            }
+            return ResponseUtil.success(student);
+        } catch (EsException e) {
+            return ResponseUtil.fail(e.getMessage());
         }
     }
 
