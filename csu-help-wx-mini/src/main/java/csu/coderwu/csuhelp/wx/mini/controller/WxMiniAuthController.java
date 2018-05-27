@@ -24,14 +24,14 @@ import java.util.Map;
  * @date : Created on 15:55 2018/5/26
  */
 @RestController
-@RequestMapping("/mini/auth")
+@RequestMapping("/auth")
 public class WxMiniAuthController {
 
     @Autowired
-    private WxMiniUserService wxMiniUserService;
+    RedisTokenManager redisTokenManager;
 
     @Autowired
-    private RedisTokenManager redisTokenManager;
+    private WxMiniUserService wxMiniUserService;
 
     @Autowired
     private WxMaService wxMaService;
@@ -55,6 +55,7 @@ public class WxMiniAuthController {
         if(sessionKey == null || openId == null){
             return ResponseUtil.fail();
         }
+
         WxMiniUser wxMiniUser = new WxMiniUser();
         wxMiniUser.setAvatarUrl(userInfo.getAvatarUrl());
         wxMiniUser.setCity(userInfo.getCity());
@@ -64,6 +65,7 @@ public class WxMiniAuthController {
         wxMiniUser.setProvince(userInfo.getProvince());
         wxMiniUser.setOpenId(openId);
         wxMiniUserService.addUser(wxMiniUser);
+
         Map<String, Object> result = new HashMap<>();
         result.put("token", redisTokenManager.createToken(openId).setId(null));
         result.put("userInfo", userInfo);
