@@ -18,6 +18,11 @@ public class ResponseUtil {
         return new Response(ResponseCode.SUCCESS, "success", data);
     }
 
+    public static Response success(String message) {
+        return new Response(ResponseCode.SUCCESS, message, null);
+    }
+
+
     public static Response success(String message, Object data) {
         return new Response(ResponseCode.SUCCESS, message, data);
     }
@@ -28,6 +33,10 @@ public class ResponseUtil {
 
     public static Response fail(Object data) {
         return new Response(ResponseCode.FAIL, "fail", data);
+    }
+
+    public static Response fail(String message) {
+        return new Response(ResponseCode.FAIL, message, null);
     }
 
     public static Response fail(String message, Object data) {
