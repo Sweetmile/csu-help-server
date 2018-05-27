@@ -1,8 +1,7 @@
-package csu.coderwu.csuhelp.cache.service.token.impl;
+package csu.coderwu.csuhelp.cache.service.token;
 
 import csu.coderwu.csuhelp.cache.bean.TokenModel;
 import csu.coderwu.csuhelp.cache.constant.Token;
-import csu.coderwu.csuhelp.cache.service.token.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -16,14 +15,13 @@ import java.util.concurrent.TimeUnit;
  * @date : Created on 16:42 2018/5/26
  */
 @Component
-public class RedisTokenManager implements TokenManager {
+public class RedisTokenManager {
 
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private static RedisTemplate<String, String> redisTemplate;
 
-    @Override
-    public TokenModel generateToken(TokenModel tokenModel) {
+    public static TokenModel generateToken(TokenModel tokenModel) {
         String token;
         if (tokenModel != null && (token = tokenModel.getToken()) != null && !token.isEmpty()) {
             deleteToken(tokenModel);
@@ -32,8 +30,7 @@ public class RedisTokenManager implements TokenManager {
         return null;
     }
 
-    @Override
-    public TokenModel createToken(String id) {
+    public static TokenModel createToken(String id) {
         if (id == null || id.isEmpty()) {
             return null;
         }
@@ -46,8 +43,7 @@ public class RedisTokenManager implements TokenManager {
         return tokenModel;
     }
 
-    @Override
-    public boolean checkToken(TokenModel model) {
+    public static boolean checkToken(TokenModel model) {
         if (model == null) {
             return false;
         }
@@ -55,15 +51,13 @@ public class RedisTokenManager implements TokenManager {
         return model.getId() != null && id.equals(model.getId());
     }
 
-    @Override
-    public void deleteToken(TokenModel tokenModel) {
+    public static void deleteToken(TokenModel tokenModel) {
         if (tokenModel != null) {
             redisTemplate.delete(tokenModel.getToken());
         }
     }
 
-    @Override
-    public String getId(TokenModel tokenModel) {
+    public static String getId(TokenModel tokenModel) {
         if (tokenModel != null) {
             return redisTemplate.boundValueOps(tokenModel.getToken()).get();
         }
