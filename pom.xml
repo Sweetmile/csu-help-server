@@ -29,9 +29,9 @@
     <modules>
         <module>csu-help-core</module>
         <module>csu-help-db</module>
+        <module>csu-help-cache</module>
         <module>csu-help-starter</module>
         <module>csu-help-wx-mini</module>
-        <module>csu-help-cache</module>
     </modules>
 
     <dependencyManagement>
