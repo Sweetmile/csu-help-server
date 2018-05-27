@@ -3,10 +3,9 @@ package csu.coderwu.csuhelp.wx.mini.annotation.support;
 import csu.coderwu.csuhelp.cache.bean.TokenModel;
 import csu.coderwu.csuhelp.cache.service.token.impl.RedisTokenManager;
 import csu.coderwu.csuhelp.wx.mini.annotation.OpenId;
-import csu.coderwu.csuhelp.wx.mini.config.Global;
+import csu.coderwu.csuhelp.wx.mini.config.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -16,12 +15,11 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author : coderWu
  * @date : Created on 17:40 2018/5/26
  */
-public class OpenIdHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class OpenIdHandlerResolver implements HandlerMethodArgumentResolver {
 
-    @Autowired
     private RedisTokenManager redisTokenManager;
 
-    public OpenIdHandlerMethodArgumentResolver(RedisTokenManager redisTokenManager) {
+    public OpenIdHandlerResolver(RedisTokenManager redisTokenManager) {
         this.redisTokenManager = redisTokenManager;
     }
 
@@ -33,7 +31,7 @@ public class OpenIdHandlerMethodArgumentResolver implements HandlerMethodArgumen
 
     @Override
     public String resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-        String token = nativeWebRequest.getHeader(Global.TOKEN_KEY);
+        String token = nativeWebRequest.getHeader(Constants.TOKEN_KEY);
         if (token.isEmpty()) {
             return null;
         }

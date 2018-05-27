@@ -4,6 +4,8 @@ import csu.coderwu.csuhelp.core.bean.Response;
 import csu.coderwu.csuhelp.core.util.ResponseUtil;
 import csu.coderwu.csuhelp.db.entity.Student;
 import csu.coderwu.csuhelp.db.service.StudentService;
+import csu.coderwu.csuhelp.wx.mini.annotation.Authorization;
+import csu.coderwu.csuhelp.wx.mini.annotation.LoginStudent;
 import csu.coderwu.csuhelp.wx.mini.annotation.OpenId;
 import csu.coderwu.tool.es.api.EsService;
 import csu.coderwu.tool.es.exception.EsException;
@@ -26,7 +28,7 @@ public class EsController {
     StudentService studentService;
 
     @PostMapping("/bind")
-    public Response bind(@OpenId String openid,@RequestBody Map<String, Object> params) {
+    public Response bind(@OpenId String openid, @RequestBody Map<String, Object> params) {
         String xh = (String) params.get("xh");
         String pwd = (String) params.get("pwd");
         if (openid == null) {
@@ -51,20 +53,25 @@ public class EsController {
     }
 
     @GetMapping("/info")
-    public Response getSchedule(@OpenId String openid) {
-        if (openid == null) {
-            return ResponseUtil.unlogin();
-        }
-        Student student = studentService.getStudent(openid);
+    @Authorization
+    public Response getInfo(@LoginStudent Student student) {
         try {
             esService.loginCheck(student.getSchoolNum(), student.getEsPwd());
-            if (student != null) {
-                student.setEsPwd(null);
-            }
+            student.setEsPwd(null);
             return ResponseUtil.success(student);
         } catch (EsException e) {
             return ResponseUtil.fail(e.getMessage());
         }
     }
+
+    //TODO 等tool es 加入获取教学日期
+//    @GetMapping("/schedule")
+//    @Authorization
+//    public Response getSchedule(@LoginStudent Student student) {
+//        try {
+//            esService.loginCheck(student.getSchoolNum(), student.getEsPwd());
+//
+//        }
+//    }
 
 }

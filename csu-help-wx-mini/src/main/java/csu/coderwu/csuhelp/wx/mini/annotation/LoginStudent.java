@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 
 /**
  * @author : coderWu
- * @date : Created on 20:02 2018/5/27
+ * @date : Created on 17:53 2018/5/26
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OpenId {
+public @interface LoginStudent {
 }
