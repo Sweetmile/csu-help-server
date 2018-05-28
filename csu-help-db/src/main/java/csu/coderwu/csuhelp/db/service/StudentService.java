@@ -39,4 +39,11 @@ public class StudentService {
         return students.size() > 0 ? students.get(0) : null;
     }
 
+    public void removeStudent(String openid) {
+        StudentExample studentExample = new StudentExample();
+        StudentExample.Criteria criteria = studentExample.createCriteria();
+        criteria.andOpenIdEqualTo(openid);
+        studentMapper.deleteByExample(studentExample);
+    }
+
 }

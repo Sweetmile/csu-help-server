@@ -29,6 +29,7 @@ public class EsController {
     @Autowired
     StudentService studentService;
 
+    @Authorization
     @PostMapping("/bind")
     public Response bind(@OpenId String openid, @RequestBody Map<String, Object> params) {
         String xh = (String) params.get("xh");
@@ -54,12 +55,23 @@ public class EsController {
         }
     }
 
+    @Authorization
+    @GetMapping("/unbind")
+    public Response unbind(@OpenId String openid) {
+        studentService.removeStudent(openid);
+        return ResponseUtil.success("取消绑定成功");
+    }
+
     @GetMapping("/info")
     @Authorization
     public Response getInfo(@LoginStudent Student student) {
+        if (student == null) {
+            return ResponseUtil.fail("还没绑定");
+        }
         try {
             esService.loginCheck(student.getSchoolNum(), student.getEsPwd());
             student.setEsPwd(null);
+            student.setOpenId(null);
             return ResponseUtil.success(student);
         } catch (EsException e) {
             return ResponseUtil.fail(e.getMessage());
@@ -69,6 +81,9 @@ public class EsController {
     @GetMapping("/schedule")
     @Authorization
     public Response getSchedule(@LoginStudent Student student) {
+        if (student == null) {
+            return ResponseUtil.fail("还没绑定教务系统哦");
+        }
         String xh = student.getSchoolNum();
         String pwd = student.getEsPwd();
         try {

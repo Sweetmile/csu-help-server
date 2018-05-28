@@ -15,7 +15,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author : coderWu
  * @date : Created on 20:00 2018/5/27
  */
-public class LoginStudentHandlerResolver implements HandlerMethodArgumentResolver {
+public class LoginStudentHandlerResolver implements HandlerMethodArgumentResolver  {
 
     private StudentService studentService;
 
@@ -25,7 +25,7 @@ public class LoginStudentHandlerResolver implements HandlerMethodArgumentResolve
 
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
-        return methodParameter.getParameterType().isAssignableFrom(String.class) &&
+        return methodParameter.getParameterType().isAssignableFrom(Student.class) &&
                 methodParameter.hasParameterAnnotation(LoginStudent.class);
     }
 
