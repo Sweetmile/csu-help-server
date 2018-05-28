@@ -1,13 +1,11 @@
 package csu.coderwu.csuhelp.wx.mini.annotation.support;
 
-import csu.coderwu.csuhelp.cache.bean.TokenModel;
-import csu.coderwu.csuhelp.cache.service.token.impl.RedisTokenManager;
 import csu.coderwu.csuhelp.wx.mini.annotation.OpenId;
 import csu.coderwu.csuhelp.wx.mini.config.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
@@ -17,12 +15,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  */
 public class OpenIdHandlerResolver implements HandlerMethodArgumentResolver {
 
-    private RedisTokenManager redisTokenManager;
-
-    public OpenIdHandlerResolver(RedisTokenManager redisTokenManager) {
-        this.redisTokenManager = redisTokenManager;
-    }
-
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         return methodParameter.getParameterType().isAssignableFrom(String.class) &&
@@ -31,10 +23,7 @@ public class OpenIdHandlerResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public String resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-        String token = nativeWebRequest.getHeader(Constants.TOKEN_KEY);
-        if (token.isEmpty()) {
-            return null;
-        }
-        return redisTokenManager.getId(new TokenModel().setToken(token));
+        return (String) nativeWebRequest.getAttribute(Constants.INNER_OPENID, RequestAttributes.SCOPE_REQUEST);
+
     }
 }

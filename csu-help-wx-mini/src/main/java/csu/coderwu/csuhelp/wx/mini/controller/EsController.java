@@ -8,6 +8,8 @@ import csu.coderwu.csuhelp.wx.mini.annotation.Authorization;
 import csu.coderwu.csuhelp.wx.mini.annotation.LoginStudent;
 import csu.coderwu.csuhelp.wx.mini.annotation.OpenId;
 import csu.coderwu.tool.es.api.EsService;
+import csu.coderwu.tool.es.bean.CourseSchedule;
+import csu.coderwu.tool.es.bean.SchoolDate;
 import csu.coderwu.tool.es.exception.EsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -64,14 +66,20 @@ public class EsController {
         }
     }
 
-    //TODO 等tool es 加入获取教学日期
-//    @GetMapping("/schedule")
-//    @Authorization
-//    public Response getSchedule(@LoginStudent Student student) {
-//        try {
-//            esService.loginCheck(student.getSchoolNum(), student.getEsPwd());
-//
-//        }
-//    }
+    @GetMapping("/schedule")
+    @Authorization
+    public Response getSchedule(@LoginStudent Student student) {
+        String xh = student.getSchoolNum();
+        String pwd = student.getEsPwd();
+        try {
+            esService.loginCheck(xh, pwd);
+            SchoolDate schoolDate = esService.getSchoolData();
+            CourseSchedule courseSchedule = esService.getCourseSchedule(
+                    xh, pwd, schoolDate.getSemester(), schoolDate.getWeekNumber());
+            return ResponseUtil.success(courseSchedule);
+        } catch (EsException e) {
+            return ResponseUtil.fail(e.getMessage());
+        }
+    }
 
 }

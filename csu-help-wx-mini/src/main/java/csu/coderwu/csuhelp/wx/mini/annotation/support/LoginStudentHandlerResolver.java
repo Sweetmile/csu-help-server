@@ -1,10 +1,9 @@
 package csu.coderwu.csuhelp.wx.mini.annotation.support;
 
-import csu.coderwu.csuhelp.cache.service.token.impl.RedisTokenManager;
 import csu.coderwu.csuhelp.db.entity.Student;
+import csu.coderwu.csuhelp.db.service.StudentService;
 import csu.coderwu.csuhelp.wx.mini.annotation.LoginStudent;
 import csu.coderwu.csuhelp.wx.mini.config.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -18,6 +17,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  */
 public class LoginStudentHandlerResolver implements HandlerMethodArgumentResolver {
 
+    private StudentService studentService;
+
+    public LoginStudentHandlerResolver(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         return methodParameter.getParameterType().isAssignableFrom(String.class) &&
@@ -26,7 +31,8 @@ public class LoginStudentHandlerResolver implements HandlerMethodArgumentResolve
 
     @Override
     public Student resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-        return (Student) nativeWebRequest.getAttribute(Constants.INNER_OPENID, RequestAttributes.SCOPE_REQUEST);
+        String openid = (String) nativeWebRequest.getAttribute(Constants.INNER_OPENID, RequestAttributes.SCOPE_REQUEST);
+        return studentService.getStudent(openid) ;
     }
 }
 

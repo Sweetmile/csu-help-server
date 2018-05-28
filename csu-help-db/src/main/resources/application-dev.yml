@@ -1,9 +1,9 @@
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://localhost:3306/csuhelp?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&verifyServerCertificate=false&useSSL=false
+      url: jdbc:mysql://tx.coderwu.com:3306/csuhelp?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&verifyServerCertificate=false&useSSL=false
       username: root
-      password: password
+      password: coderWu@76219
       driver-class-name: com.mysql.jdbc.Driver
       initial-size: 25
       max-active: 50
@@ -16,7 +16,6 @@ spring:
       test-on-return: false
       test-while-idle: true
       time-between-eviction-runs-millis: 60000
-      filters: stat,wall,log4j
 
 logging:
   level:

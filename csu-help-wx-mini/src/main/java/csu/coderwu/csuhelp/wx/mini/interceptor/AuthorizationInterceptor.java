@@ -19,12 +19,13 @@ import java.lang.reflect.Method;
  * @author : coderWu
  * @date : Created on 19:40 2018/5/27
  */
-public class EsInterceptor implements HandlerInterceptor {
+public class AuthorizationInterceptor implements HandlerInterceptor {
 
-    @Autowired
     private RedisTokenManager redisTokenManager;
-    @Autowired
-    private StudentService studentService;
+
+    public AuthorizationInterceptor(RedisTokenManager redisTokenManager) {
+        this.redisTokenManager = redisTokenManager;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -41,12 +42,7 @@ public class EsInterceptor implements HandlerInterceptor {
                 return false;
             }
             String openid = redisTokenManager.getId(new TokenModel().setToken(token));
-            Student student = studentService.getStudent(openid);
-            if (student == null) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return false;
-            }
-            request.setAttribute(Constants.INNER_OPENID, student);
+            request.setAttribute(Constants.INNER_OPENID, openid);
         }
         return true;
     }
