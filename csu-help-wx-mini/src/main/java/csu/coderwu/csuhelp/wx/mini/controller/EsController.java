@@ -80,7 +80,8 @@ public class EsController {
 
     @GetMapping("/schedule")
     @Authorization
-    public Response getSchedule(@LoginStudent Student student) {
+    public Response getSchedule(@LoginStudent Student student,
+                                @RequestParam(value = "week", required = false) Integer week) {
         if (student == null) {
             return ResponseUtil.fail("还没绑定教务系统哦");
         }
@@ -90,7 +91,8 @@ public class EsController {
             esService.loginCheck(xh, pwd);
             SchoolDate schoolDate = esService.getSchoolData();
             CourseSchedule courseSchedule = esService.getCourseSchedule(
-                    xh, pwd, schoolDate.getSemester(), schoolDate.getWeekNumber());
+                    xh, pwd, schoolDate.getSemester(),
+                    week == null ? schoolDate.getWeekNumber() : week);
             return ResponseUtil.success(courseSchedule);
         } catch (EsException e) {
             return ResponseUtil.fail(e.getMessage());
