@@ -10,10 +10,12 @@ import csu.coderwu.csuhelp.wx.mini.annotation.OpenId;
 import csu.coderwu.tool.es.api.EsService;
 import csu.coderwu.tool.es.bean.CourseSchedule;
 import csu.coderwu.tool.es.bean.SchoolDate;
+import csu.coderwu.tool.es.bean.Score;
 import csu.coderwu.tool.es.exception.EsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -99,4 +101,23 @@ public class EsController {
         }
     }
 
+    @GetMapping("/grades")
+    @Authorization
+    public Response getGrades(@LoginStudent Student student,
+                              @RequestParam(value = "semester", required = false) String semester) {
+        if (student == null) {
+            return ResponseUtil.fail("还没绑定教务系统哦");
+        }
+        String xh = student.getSchoolNum();
+        String pwd = student.getEsPwd();
+        try {
+            esService.loginCheck(xh, pwd);
+            SchoolDate schoolDate = esService.getSchoolData();
+            semester = semester == null ? schoolDate.getSemester() : semester;
+            List<Score> scoreList = esService.getScore(xh, pwd, semester);
+            return ResponseUtil.success(scoreList);
+        } catch (EsException e) {
+            return ResponseUtil.fail(e.getMessage());
+        }
+    }
 }
