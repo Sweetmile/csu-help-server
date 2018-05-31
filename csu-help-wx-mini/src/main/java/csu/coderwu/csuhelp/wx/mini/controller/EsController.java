@@ -11,6 +11,7 @@ import csu.coderwu.tool.es.api.EsService;
 import csu.coderwu.tool.es.bean.CourseSchedule;
 import csu.coderwu.tool.es.bean.SchoolDate;
 import csu.coderwu.tool.es.bean.Score;
+import csu.coderwu.tool.es.bean.StudyRoom;
 import csu.coderwu.tool.es.exception.EsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -116,6 +117,22 @@ public class EsController {
             semester = semester == null ? schoolDate.getSemester() : semester;
             List<Score> scoreList = esService.getScore(xh, pwd, semester);
             return ResponseUtil.success(scoreList);
+        } catch (EsException e) {
+            return ResponseUtil.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/room")
+    public Response getStudyRoom(@RequestParam(value = "campus", required = false) Integer campusId,
+                                 @RequestParam(value = "build", required = false) String buildId,
+                                 @RequestParam(value = "time", required = false) String time) {
+        if (campusId == null || buildId == null || time == null ||
+                campusId > 9 || campusId < 1 || time.isEmpty() || buildId.isEmpty()) {
+            return ResponseUtil.badArgument();
+        }
+        try {
+            List<StudyRoom> rooms = esService.getStudyRoom(campusId, buildId, time);
+            return ResponseUtil.success(rooms);
         } catch (EsException e) {
             return ResponseUtil.fail(e.getMessage());
         }
