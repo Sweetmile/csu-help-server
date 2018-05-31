@@ -12,10 +12,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "csu.coderwu.csuhelp.wx.mini"
 
 })
-@MapperScan("csu.coderwu.csuhelp.db.do")
-public class StarterApplication {
+@MapperScan("csu.coderwu.csuhelp.db.dao")
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(StarterApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }
