@@ -55,11 +55,11 @@ public interface WxMiniUserMapper {
      * @mbg.generated
      */
     @Insert({
-        "insert into wx_mini_user (nickname, gender, ",
+        "insert into wx_mini_user (open_id, nickname, gender, ",
         "city, province, ",
         "country, avatar_url, ",
         "union_id)",
-        "values (#{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, ",
+        "values (#{openId,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, ",
         "#{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, ",
         "#{country,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, ",
         "#{unionId,jdbcType=VARCHAR})"

@@ -45,7 +45,11 @@ public class WxMiniUserSqlProvider {
     public String insertSelective(WxMiniUser record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("wx_mini_user");
-        
+
+        if (record.getOpenId() != null) {
+            sql.VALUES("open_id", "#{openId,jdbcType=VARCHAR}");
+        }
+
         if (record.getNickname() != null) {
             sql.VALUES("nickname", "#{nickname,jdbcType=VARCHAR}");
         }
